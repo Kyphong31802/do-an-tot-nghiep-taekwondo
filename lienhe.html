@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Liên hệ – Shop NKP</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --pink-50: #111625;          /* Nền body màu xanh đen đồng bộ Logo */
+            --pink-100: #111625;         /* Nền top-bar xanh đen */
+            --pink-500: #b38728;         /* Header màu vàng Gold sang trọng */
+            --pink-700: #000000;         /* đen */
+            --action-red: #d32f2f;       /* Màu đỏ mạnh dùng riêng cho nút bấm và tiêu đề để tạo điểm nhấn */
+            --card-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            --radius: 14px;
+            
+            /* Dải màu vàng Gold kim loại lấy từ logo */
+            --gold-gradient: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: var(--pink-50);
+            color: #eeeeee;
+        }
+
+        /* TOP SHOP NAME / LOGO */
+        .top-bar {
+            background: var(--pink-100);
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px; 
+            border-bottom: 2px solid #b38728;
+        }
+
+        .shop-logo {
+            height: 100px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.5));
+        }
+
+        /* KHUNG CHỨA CHỮ KẾ BÊN LOGO */
+        .shop-brand-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            font-family: 'Cinzel', serif;
+        }
+
+        /* CHỮ NKP TO Ở TRÊN */
+        .brand-main {
+            font-size: clamp(32px, 5vw, 46px);
+            font-weight: 900;
+            line-height: 0.95;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            
+            /* Hiệu ứng mạ vàng ánh kim */
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            
+            /* Đổ bóng khối 3D dứt khoát */
+            filter: drop-shadow(2px 2px 0px #000) 
+                    drop-shadow(3px 3px 5px rgba(0,0,0,0.6));
+        }
+
+        /* CHỮ TAEKWONDO NHỎ Ở DƯỚI */
+        .brand-sub {
+            font-size: clamp(12px, 2vw, 16px);
+            font-weight: 700;
+            line-height: 1;
+            margin: 4px 0 0 2px;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            color: #ffffff;
+            text-shadow: 1px 1px 2px #000;
+            opacity: 0.9;
+        }
+
+        /* HEADER */
+        header {
+            background: var(--pink-500);
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            position: sticky;
+            top: 122px;
+            z-index: 15;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        /* ĐỒNG BỘ NÚT MENU Y HỆT TRANG CHỦ */
+        #openBtn {
+            background: rgba(0, 0, 0, 0.2); 
+            color: #fff;
+            border: 1px solid rgba(0, 0, 0, 0.25);
+            padding: 10px 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        #openBtn:hover {
+            background: rgba(0, 0, 0, 0.35);
+        }
+
+        .header-title-placeholder {
+            flex: 1;
+        }
+
+        /* SIDE MENU */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.4);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .2s ease;
+            z-index: 40;
+        }
+        .overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #sideMenu {
+            position: fixed;
+            top: 0;
+            left: -240px;
+            width: 240px;
+            height: 100%;
+            background: linear-gradient(180deg, #b38728, #111625);
+            padding-top: 70px;
+            transition: left .25s ease;
+            z-index: 50;
+            box-shadow: 10px 0 30px rgba(0,0,0,.3);
+        }
+        #sideMenu.open { left: 0; }
+        #sideMenu a {
+            display: block;
+            padding: 12px 16px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+        }
+        #sideMenu a.active { background: rgba(255,255,255,.18); color: #fcf6ba; }
+        #sideMenu a:hover { background: rgba(255,255,255,.18); }
+
+        /* MAIN CONTENT LAYOUT */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 22px 16px 34px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: var(--radius);
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(179, 135, 40, 0.1);
+            padding: 24px;
+            color: #333;
+        }
+
+        .title {
+            margin: 0 0 12px;
+            color: var(--action-red);
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .desc {
+            margin: 0 0 18px;
+            color: #666;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* FORM */
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 700;
+            font-size: 14px;
+            color: #222;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            outline: none;
+            font-family: inherit;
+            background: #fdfdfd;
+            font-size: 14px;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--pink-500);
+            box-shadow: 0 0 0 3px rgba(179, 135, 40, 0.15);
+        }
+        .form-group textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+            font-weight: 900;
+            font-size: 15px;
+            transition: filter 0.2s;
+        }
+        .btn-primary {
+            background: var(--action-red);
+            color: #fff;
+        }
+        .btn-ghost {
+            background: #ffebee;
+            color: var(--action-red);
+        }
+        .btn:hover { filter: brightness(.9); }
+
+        /* INFO LIST */
+        .info {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 10px;
+        }
+        .info-item {
+            padding: 14px;
+            border-radius: 14px;
+            background: #f9f9fb;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .info-item b { color: #111; }
+        .info-item span { color: #555; }
+        .info-item a {
+            color: var(--action-red);
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .info-item a:hover {
+            text-decoration: underline;
+        }
+
+        /* MAP */
+        .map {
+            margin-top: 16px;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .map iframe {
+            width: 100%;
+            height: 300px;
+            border: 0;
+            display: block;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #111625;
+            color: #bf953f;
+            text-align: center;
+            padding: 20px 10px;
+            border-top: 2px solid #b38728;
+            margin-top: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; }
+            header { top: 112px; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="top-bar">
+        <img src="image/logoweb.png" alt="Logo NKP Shop" class="shop-logo">
+        <div class="shop-brand-wrapper">
+            <div class="brand-main">NKP</div>
+            <div class="brand-sub">TAEKWONDO</div>
+        </div>
+    </div>
+
+    <header>
+        <button id="openBtn" type="button">☰ Menu</button>
+        <div class="header-title-placeholder"></div>
+    </header>
+
+    <div class="overlay" id="overlay"></div>
+
+    <nav id="sideMenu" aria-label="menu">
+        <a href="trangchu.html">Trang chủ</a>
+        <a href="gioithieu.html">Giới thiệu</a>
+        <a href="lienhe.html" class="active">Liên hệ</a>
+    </nav>
+
+    <main class="container">
+        <section class="card">
+            <h2 class="title">📩 Gửi tin nhắn cho shop</h2>
+            <p class="desc">
+                Em điền thông tin bên dưới. Shop sẽ phản hồi sớm nhất qua số điện thoại hoặc email của em.
+            </p>
+
+            <form id="contactForm">
+                <div class="form-group">
+                    <label>Họ và tên</label>
+                    <input id="fullName" type="text" placeholder="Ví dụ: Nguyễn Văn A" required />
+                </div>
+
+                <div class="form-group">
+                    <label>Số điện thoại</label>
+                    <input id="phone" type="tel" placeholder="Ví dụ: 09xxxxxxxx" required />
+                </div>
+
+                <div class="form-group">
+                    <label>Email (không bắt buộc)</label>
+                    <input id="email" type="email" placeholder="Ví dụ: abc@gmail.com" />
+                </div>
+
+                <div class="form-group">
+                    <label>Nội dung</label>
+                    <textarea id="message" placeholder="Bạn muốn tư vấn sản phẩm nào? hoặc cần hỗ trợ đơn hàng nào ..." required></textarea>
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-ghost" type="reset">Xóa nội dung</button>
+                    <button class="btn btn-primary" type="submit">Gửi liên hệ</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="card">
+            <h2 class="title">📍 Thông tin cửa hàng</h2>
+            <p class="desc"> </p>
+
+            <div class="info">
+                <div class="info-item">
+                    <b>Địa chỉ:</b> <span>Đường Trần Văn Quan, Xã Long Điền, Thành Phố Hồ Chí Minh</span>
+                </div>
+                <div class="info-item">
+                    <b>Hotline/Zalo:</b> <span>0785686916</span>
+                </div>
+                <div class="info-item">
+                    <b>Giờ làm việc:</b> <span>07:00 – 22:00 (T2–CN)</span>
+                </div>
+                <div class="info-item">
+                    <b>Mạng xã hội:</b>
+                    <span>
+                        <a href="https://www.facebook.com/Landofdragonstaekwondo" target="_blank">Facebook</a> /
+                        <a href="https://script.google.com/macros/s/AKfycbxYoY4TpK9zyiUcEgfTXsJ3ZebhNfg8lv6qtKk_Qq4xB2dBJloD0Zt3IwCsn7RnHd9K_w/exec" target="_blank">Thông tin</a> /
+                        <a href="https://www.tiktok.com/@longdientaekwondo" target="_blank">TikTok</a>
+                    </span>
+                </div>
+            </div>
+
+            <div class="map">
+                <iframe
+                    src="https://www.google.com/maps?q=10.4840164,107.2058445&z=17&output=embed"
+                    width="100%"
+                    height="300"
+                    style="border:0;"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    title="Land Of Dragons Taekwondo">
+                </iframe>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        © 2026 NKP Taekwondo Shop – Dụng cụ - Võ phục chính hãng
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <script>
+        emailjs.init("5fKwQQye1pZl_w54A");
+
+        // Logic đóng mở Menu
+        const openBtn = document.getElementById("openBtn");
+        const sideMenu = document.getElementById("sideMenu");
+        const overlay = document.getElementById("overlay");
+
+        function toggleMenu(force){
+            const willOpen = typeof force === "boolean" ? force : !sideMenu.classList.contains("open");
+            sideMenu.classList.toggle("open", willOpen);
+            overlay.classList.toggle("show", willOpen);
+        }
+
+        // Bấm nút Menu để mở hoặc đóng linh hoạt
+        openBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            toggleMenu();
+        });
+
+        overlay.addEventListener("click", () => toggleMenu(false));
+        
+        document.addEventListener("keydown", (e) => {
+            if(e.key === "Escape") toggleMenu(false);
+        });
+
+        // Xử lý gửi Form Liên hệ
+        const form = document.getElementById("contactForm");
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const btn = form.querySelector("button[type='submit']");
+            btn.disabled = true;
+            btn.innerText = "Đang gửi...";
+
+            try {
+                await emailjs.send("service_d4vlicf", "template_ubf3sl4", {
+                    fullName: document.getElementById("fullName").value.trim(),
+                    phone: document.getElementById("phone").value.trim(),
+                    email: document.getElementById("email").value.trim(),
+                    message: document.getElementById("message").value.trim(),
+                });
+
+                alert("✔ Gửi thành công! Shop sẽ phản hồi bạn nhanh nhất.");
+                form.reset();
+
+            } catch (err) {
+                console.log(err);
+                alert("❌ Gửi thất bại, thử lại!");
+            }
+
+            btn.disabled = false;
+            btn.innerText = "Gửi liên hệ";
+        });
+    </script>
+</body>
+</html>

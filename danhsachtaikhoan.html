@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Danh sách thành viên đăng ký - Shop NKP</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Montserrat:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --pink-50: #111625;          /* Nền body màu xanh đen đồng bộ Logo */
+            --pink-100: #111625;         /* Nền top-bar xanh đen */
+            --pink-500: #b38728;         /* Header màu vàng Gold sang trọng */
+            --action-red: #d32f2f;       /* Màu đỏ mạnh làm điểm nhấn tiêu đề và bảng */
+            --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --radius: 14px;
+            
+            /* Dải màu vàng Gold kim loại lấy từ logo */
+            --gold-gradient: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
+        }
+
+        * { box-sizing: border-box; }
+        
+        html, body {
+            height: 100%;
+        }
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            margin: 0;
+            padding: 0; 
+            background: var(--pink-50); 
+            color: #eeeeee;
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* TOP SHOP NAME / LOGO */
+        .top-bar {
+            background: var(--pink-100);
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px; 
+            border-bottom: 2px solid #b38728;
+        }
+
+        .shop-logo {
+            height: 100px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.5));
+        }
+
+        /* KHUNG CHỨA CHỮ KẾ BÊN LOGO */
+        .shop-brand-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            font-family: 'Cinzel', serif;
+        }
+
+        /* CHỮ NKP TO Ở TRÊN */
+        .brand-main {
+            font-size: clamp(32px, 5vw, 46px);
+            font-weight: 900;
+            line-height: 0.95;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(2px 2px 0px #000) drop-shadow(3px 3px 5px rgba(0,0,0,0.6));
+        }
+
+        /* CHỮ TAEKWONDO NHỎ Ở DƯỚI */
+        .brand-sub {
+            font-size: clamp(12px, 2vw, 16px);
+            font-weight: 700;
+            line-height: 1;
+            margin: 4px 0 0 2px;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            color: #ffffff;
+            text-shadow: 1px 1px 2px #000;
+            opacity: 0.9;
+        }
+
+        /* HEADER */
+        header {
+            background: var(--pink-500);
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            position: sticky;
+            top: 122px;
+            z-index: 15;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        #openBtn, #logoutBtn {
+            background: rgba(0, 0, 0, 0.2);
+            color: #fff;
+            border: 1px solid rgba(0, 0, 0, 0.25);
+            padding: 10px 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+        #openBtn:hover, #logoutBtn:hover {
+            background: rgba(0, 0, 0, 0.35);
+        }
+
+        .header-title-placeholder {
+            flex: 1;
+        }
+
+        /* SIDE MENU */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.4);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .2s ease;
+            z-index: 40;
+        }
+        .overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #sideMenu {
+            position: fixed;
+            top: 0;
+            left: -240px;
+            width: 240px;
+            height: 100%;
+            background: linear-gradient(180deg, #b38728, #111625);
+            padding-top: 70px;
+            transition: left .25s ease;
+            z-index: 50;
+            box-shadow: 10px 0 30px rgba(0,0,0,.3);
+        }
+        #sideMenu.open { left: 0; }
+        #sideMenu a {
+            display: block;
+            padding: 12px 16px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+        }
+        #sideMenu a:hover { background: rgba(255,255,255,.18); }
+
+        /* MAIN CONTAINER */
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 30px 16px;
+            flex: 1; 
+        }
+
+        /* TIÊU ĐỀ CHÍNH */
+        h2 {
+            margin: 0 0 25px 0;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: clamp(20px, 3vw, 28px);
+            filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.5));
+        }
+
+        /* BẢNG DỮ LIỆU ĐỔI SANG TONE TỐI (DARK MODE) ĐỒNG BỘ LOGO */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: var(--radius);
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(179, 135, 40, 0.25); /* Viền mạ vàng nhẹ quanh bảng */
+        }
+
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            background: #1b2234; /* ĐÃ SỬA: Đổi nền bảng sang màu xanh đen lịch lãm */
+            color: #ffffff; /* ĐÃ SỬA: Đổi chữ sang màu trắng */
+        }
+        
+        th, td { 
+            border: 1px solid rgba(179, 135, 40, 0.2); /* ĐÃ SỬA: Đường viền vàng Gold đứt nét tinh tế */
+            padding: 14px 16px; 
+            text-align: left; 
+            font-size: 14px;
+        }
+        
+        th { 
+            background: linear-gradient(135deg, #bd2121, #961b1b); /* Đỏ sẫm mạnh mẽ tinh tế hơn */
+            color: white; 
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #b38728; /* Viền ngăn cách với thân là màu vàng Gold */
+        }
+        
+        tr:nth-child(even) { background-color: #161c2a; } /* ĐÃ SỬA: Dòng xen kẽ tối màu */
+        tr:hover { background-color: #242e47; } /* Hiệu ứng hover nổi bật */
+        
+        /* Cấu hình cụm ẩn/hiện mật khẩu */
+        .pwd-container { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            gap: 8px;
+        }
+        .pwd-text { display: none; color: #fcf6ba; font-weight: 600; } /* Chữ mật khẩu màu vàng nhạt */
+        .pwd-masked { display: inline; font-weight: bold; letter-spacing: 2px; color: #a0aec0; }
+        .btn-toggle-pwd { 
+            background: none; 
+            border: none; 
+            cursor: pointer; 
+            font-size: 16px; 
+            padding: 0 5px; 
+            filter: grayscale(1) brightness(1.5); /* Giúp icon con mắt sáng rõ trên nền tối */
+            transition: transform 0.1s;
+        }
+        .btn-toggle-pwd:active { transform: scale(0.9); }
+
+        /* FOOTER */
+        footer {
+            background: #111625;
+            color: #bf953f;
+            text-align: center;
+            padding: 20px 10px;
+            border-top: 2px solid #b38728;
+            width: 100%;
+        }
+
+        @media (max-width: 920px) {
+            header { top: 112px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <img src="image/logoweb.png" alt="Logo NKP Shop" class="shop-logo">
+        <div class="shop-brand-wrapper">
+            <div class="brand-main">NKP</div>
+            <div class="brand-sub">TAEKWONDO</div>
+        </div>
+    </div>
+
+    <header>
+        <button id="openBtn" type="button">☰ Menu</button>
+        <div class="header-title-placeholder"></div>
+        <!--<button id="logoutBtn" type="button">Đăng xuất</button>-->
+    </header>
+
+    <div class="overlay" id="overlay"></div>
+
+    <nav id="sideMenu" aria-label="menu">
+        <a href="trangchu.html">Trang chủ</a>
+        <a href="gioithieu.html">Giới thiệu</a>
+        <!--    <a href="dangnhap.html">Đăng nhập</a>-->
+        <a href="lienhe.html">Liên hệ</a>
+    </nav>
+
+    <main class="container">
+        <h2>🥋 Danh sách thành viên đã đăng ký (Local) 🥋</h2>
+        
+        <div class="table-responsive">
+            <table id="userTable">
+                <thead>
+                    <tr>
+                        <th>Họ và tên</th>
+                        <th>Số điện thoại</th>
+                        <th>Email</th>
+                        <th>Mật khẩu</th> 
+                        <th>Ngày đăng ký</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer>
+        © 2026 NKP Taekwondo Shop – Dụng cụ - Võ phục chính hãng
+    </footer>
+
+<script>
+    // Lấy dữ liệu từ LocalStorage ra
+    const users = JSON.parse(localStorage.getItem("pb_users")) || [];
+    const tbody = document.querySelector("#userTable tbody");
+
+    if(users.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: #a0aec0; font-weight: 500; padding: 40px; background-color: #1b2234;">Chưa có thành viên nào đăng ký trên máy này!</td></tr>`;
+    } else {
+        // Duyệt qua từng người dùng và chèn vào bảng HTML
+        users.forEach((user, index) => {
+            const row = `<tr>
+                <td style="font-weight: 600; color: #fcf6ba;">${user.fullName || ""}</td>
+                <td>${user.phone || ""}</td>
+                <td style="color: #cbd5e1;">${user.email || ""}</td>
+                <td>
+                    <div class="pwd-container">
+                        <span class="pwd-masked" id="pwd-masked-${index}">******</span>
+                        <span class="pwd-text" id="pwd-text-${index}" style="display:none;">${user.password || "Không rõ"}</span>
+                        <button class="btn-toggle-pwd" onclick="togglePassword(${index})">👁️</button>
+                    </div>
+                </td>
+                <td style="color: #94a3b8;">${user.createdAt ? new Date(user.createdAt).toLocaleString('vi-VN') : ""}</td>
+            </tr>`;
+            tbody.innerHTML += row;
+        });
+    }
+
+    // Hàm xử lý ẩn/hiện mật khẩu
+    function togglePassword(index) {
+        const masked = document.getElementById(`pwd-masked-${index}`);
+        const text = document.getElementById(`pwd-text-${index}`);
+        if (text.style.display === "none") {
+            text.style.display = "inline";
+            masked.style.display = "none";
+        } else {
+            text.style.display = "none";
+            masked.style.display = "inline";
+        }
+    }
+
+    // Xử lý đóng mở Menu trượt
+    const openBtn = document.getElementById("openBtn");
+    const sideMenu = document.getElementById("sideMenu");
+    const overlay = document.getElementById("overlay");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    logoutBtn.addEventListener("click", () => {
+        window.location.href = "dangnhap.html";
+    });
+
+    function toggleMenu(force){
+        const willOpen = typeof force === "boolean" ? force : !sideMenu.classList.contains("open");
+        sideMenu.classList.toggle("open", willOpen);
+        overlay.classList.toggle("show", willOpen);
+    }
+
+    openBtn.addEventListener("click", () => toggleMenu());
+    overlay.addEventListener("click", () => toggleMenu(false));
+    document.addEventListener("keydown", (e) => {
+        if(e.key === "Escape") toggleMenu(false);
+    });
+</script>
+</body>
+</html>

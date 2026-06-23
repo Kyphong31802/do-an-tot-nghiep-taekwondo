@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TAEKWONDO - NKP - SHOP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root{
+            --pink-50:#111625;          /* Nền body màu xanh đen đồng bộ Logo */
+            --pink-100:#111625;         
+            --pink-500:#b38728;         /* Vàng Gold */
+            --pink-700:#000000;         /* Đen */
+            --card-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            --radius: 14px;
+            --gold-gradient: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
+        }
+        *{ box-sizing:border-box; }
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        body{
+            font-family: 'Montserrat', sans-serif;
+            background: var(--pink-50);
+            color:#eeeeee;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* --- ĐỊNH DẠNG KHUNG BODY TRÀN MÀN HÌNH FULL TOÀN DIỆN --- */
+        main {
+            flex: 1 0 auto;    
+            width: 100%;
+            padding: 60px;        
+            
+            /* Đưa ảnh từ web vào làm nền tràn khung */
+            background-image: linear-gradient(rgba(17, 22, 37, 0.5), rgba(17, 22, 37, 0.6)), url('https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=1471&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            /* Chia đôi không gian: Chữ bên trái, Cụm Logo + Nút bên phải */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap; 
+        }
+
+        /* Khối nội dung chữ bên trái */
+        .content-left {
+            max-width: 600px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9);
+        }
+        .content-left h1 {
+            font-family: 'Playfair Display', 'Montserrat', serif;
+            font-size: clamp(26px, 4.5vw, 40px);
+            color: #fcf6ba;
+            margin: 0 0 20px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .content-left p {
+            font-size: clamp(16px, 2.5vw, 19px);
+            line-height: 1.7;
+            color: #ffffff;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* Khối bên phải chứa cả Logo, Chữ thương hiệu và Nút bấm */
+        .content-right {
+            display: flex;
+            flex-direction: column;
+            align-items: center;  /* Căn giữa dọc các phần tử nội bộ bên phải */
+            gap: 25px;            /* Khoảng cách giữa Logo và Nút Đăng nhập */
+            background: rgba(17, 22, 37, 0.7); /* Thêm nền mờ nhẹ bao quanh cụm logo nút cho sang trọng */
+            padding: 35px;
+            border-radius: var(--radius);
+            border: 1px solid rgba(179, 135, 40, 0.3);
+            backdrop-filter: blur(5px); /* Hiệu ứng kính mờ thời thượng */
+            box-shadow: var(--card-shadow);
+        }
+
+        /* Định dạng cụm tên thương hiệu khi đưa xuống dưới */
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .shop-logo {
+            height: 90px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.5));
+        }
+        .shop-brand-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            font-family: 'Cinzel', serif;
+        }
+        .brand-main {
+            font-size: clamp(32px, 4vw, 42px);
+            font-weight: 900;
+            line-height: 0.95;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(2px 2px 0px #000) 
+                    drop-shadow(3px 3px 5px rgba(0,0,0,0.6));
+        }
+        .brand-sub {
+            font-size: clamp(12px, 1.5vw, 15px);
+            font-weight: 700;
+            line-height: 1;
+            margin: 4px 0 0 2px;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            color: #ffffff;
+            text-shadow: 1px 1px 2px #000;
+            opacity: 0.9;
+        }
+
+        /* Nút đăng nhập mua sắm */
+        .btn-login {
+            display: inline-block;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #111625;
+            background: var(--gold-gradient);
+            padding: 16px 35px;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(179, 135, 40, 0.4);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            width: 100%; /* Giúp nút co giãn vừa vặn với cụm logo phía trên */
+            text-align: center;
+        }
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(252, 246, 186, 0.6);
+            color: #ffffff;
+            background: #111625;
+            border-color: #b38728;
+        }
+
+        footer{
+            background: #111625;
+            color: #bf953f;
+            text-align:center;
+            padding: 20px 10px;
+            border-top: 2px solid #b38728;
+            flex-shrink: 0; 
+        }
+
+        /* Tối ưu hiển thị trên điện thoại */
+        @media (max-width: 850px) {
+            main {
+                padding: 40px 20px;
+                flex-direction: column;
+                text-align: center;
+                justify-content: center;
+            }
+            .content-right {
+                width: 100%;
+                max-width: 400px;
+            }
+            .brand-container {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main>
+        <div class="content-left">
+            <h1>Tinh Thần Võ Đạo</h1>
+            <p>Võ thuật không chỉ dạy ta cách chiến đấu, mà là học cách kiểm soát bản thân. Sức mạnh đích thực của người học Taekwondo nằm ở sự kiên trì, kỷ luật và một ý chí bất khuất.</p>
+        </div>
+
+        <div class="content-right">
+            <div class="brand-container">
+                <img src="image/logoweb.png" alt="Logo NKP Shop" class="shop-logo">
+                <div class="shop-brand-wrapper">
+                    <div class="brand-main">NKP</div>
+                    <div class="brand-sub">TAEKWONDO</div>
+                </div>
+            </div>
+            
+            <a href="dangnhap.html" class="btn-login">Đăng nhập để mua sắm</a>
+        </div>
+    </main>
+    
+    <footer>
+        © 2026 NKP Taekwondo Shop – Dụng cụ - Võ phục chính hãng
+    </footer>
+</body>
+</html>
